@@ -1,0 +1,4 @@
+vendor/
+docker/mysql/
+.DS_Store
+.idea/
