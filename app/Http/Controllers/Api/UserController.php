@@ -24,6 +24,7 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         $user = User::create($request->all());
+        $user->refresh();
         return new UserResource($user);
     }
 

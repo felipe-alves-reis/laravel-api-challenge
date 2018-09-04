@@ -18,5 +18,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['namespace' => 'Api', 'as' => 'api.'], function() {
-    Route::resource('users', 'UserController', ['except' => ['create', 'edit']]);
+    Route::name('login')->post('login', 'AuthController@login');
+    Route::name('refresh_token')->post('refresh_token', 'AuthController@refreshToken');
+
+    Route::group(['middleware' => ['auth:api', 'jwt.refresh']], function() {
+        Route::name('logout')->post('logout', 'AuthController@logout');
+        Route::name('user_logged')->post('user_logged', 'AuthController@userLogged');
+        Route::resource('users', 'UserController', ['except' => ['create', 'edit']]);
+        Route::resource('categories', 'CategoryController', ['except' => ['create', 'edit']]);
+        Route::resource('courses', 'CourseController', ['except' => ['create', 'edit']]);
+        Route::resource('courses.categories', 'CourseCategoryController', ['only' => ['index', 'store', 'destroy']]);
+    });
 });
