@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\UserRequest;
-use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Common\OnlyTrashed;
+use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
-    public function index()
+    use OnlyTrashed;
+    
+    public function index(Request $request)
     {
-        $users = User::paginate();
+        $query = User::query();
+        $query = $this->onlyTrashed($request, $query);
+        $users = $query->paginate(10);
         return UserResource::collection($users);
     }
 
@@ -33,8 +39,9 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return response()->json([], 204);
     }
 }
