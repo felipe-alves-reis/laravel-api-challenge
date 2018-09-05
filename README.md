@@ -20,9 +20,11 @@ Challenge made for an interview. Api Laravel has courses and categories endpoint
 
 3 - sudo docker-compose up --build
 
-4 - php artisan migrate --seed
+4 - Composer install
 
-5 - php artisan jwt:secret
+5 - php artisan migrate --seed
+
+6 - php artisan jwt:secret
 
 Enjoy
 
