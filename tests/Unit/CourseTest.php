@@ -3,8 +3,10 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class CategoryTest extends TestCase
+class CourseTest extends TestCase
 {
     public function getToken()
     {
@@ -18,7 +20,7 @@ class CategoryTest extends TestCase
         return json_decode($responseToken->getContent());
     }
 
-    public function testCreateCategorySuccessfully()
+    public function testCreateCourseSuccessfully()
     {
         $content = $this->getToken();
 
@@ -28,12 +30,12 @@ class CategoryTest extends TestCase
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer ' . $content->token
             ]
-            )->json('POST', '/api/categories', ['name' => 'Test Category']);
+        )->json('POST', '/api/courses', ['name' => 'Test Course']);
 
         $response->assertStatus(201);
     }
 
-    public function testDeleteCategorySuccessfully()
+    public function testDeleteCourseSuccessfully()
     {
         $content = $this->getToken();
 
@@ -43,7 +45,7 @@ class CategoryTest extends TestCase
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer ' . $content->token
             ]
-        )->json('POST', '/api/categories', ['name' => 'Test Category']);
+        )->json('POST', '/api/courses', ['name' => 'Test Course']);
 
         $contentUser = json_decode($responseUser->getContent());
 
@@ -53,7 +55,7 @@ class CategoryTest extends TestCase
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer ' . $content->token
             ]
-        )->json('DELETE', '/api/categories/'. $contentUser->data->id, []);
+        )->json('DELETE', '/api/courses/'. $contentUser->data->id, []);
 
         $response->assertStatus(204);
     }
